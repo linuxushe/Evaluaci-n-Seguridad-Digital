@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación · Seguridad digital (25 preguntas + verificador)</title>
+    <style>
+        /* ===== RESET Y BASE (fondo negro, texto blanco) ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #000000;
+            color: #f0f4fa;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #111111;
+            border-radius: 32px;
+            box-shadow: 0 16px 48px rgba(255, 255, 255, 0.04);
+            padding: 2rem 2.5rem;
+            border: 1px solid #2a2a2a;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            border-bottom: 4px solid #3a6a8a;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .subtitulo {
+            font-size: 1rem;
+            color: #b0c8db;
+            background: #1e2e3e;
+            display: inline-block;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            margin-bottom: 1.8rem;
+            margin-top: -0.2rem;
+            border: 1px solid #3a5a7a;
+        }
+
+        .parte {
+            margin: 2.8rem 0 2rem 0;
+        }
+
+        .parte-titulo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #d6e8f5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 8px solid #4a8ab0;
+            padding-left: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .parte-titulo small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #9ab8d0;
+            background: #1e2e3e;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        p {
+            color: #d0dce8;
+            margin-bottom: 1rem;
+        }
+
+        strong {
+            color: #ffffff;
+        }
+
+        /* ===== PREGUNTAS ===== */
+        .pregunta {
+            background: #1a1a1a;
+            border: 1px solid #2f4a5f;
+            border-radius: 20px;
+            padding: 1.2rem 1.6rem;
+            margin-bottom: 1.2rem;
+            transition: background 0.15s;
+        }
+
+        .pregunta.correcta {
+            background: #1a3a2e;
+            border-color: #3a9a7a;
+        }
+
+        .pregunta.incorrecta {
+            background: #3a1a1a;
+            border-color: #b06060;
+        }
+
+        .pregunta p {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+            color: #f0f4fa;
+        }
+
+        .opciones {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            padding-left: 0.2rem;
+        }
+
+        .opciones label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.1s;
+            font-weight: 400;
+            color: #d0dce8;
+        }
+
+        .opciones label:hover {
+            background: #2a2a2a;
+        }
+
+        .opciones input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4a9ac0;
+            flex-shrink: 0;
+            cursor: pointer;
+            filter: invert(1);
+        }
+
+        .feedback-individual {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .feedback-individual.ok {
+            color: #6ac9a0;
+        }
+
+        .feedback-individual.fail {
+            color: #e68080;
+        }
+
+        /* ===== VERIFICADOR DE CONTRASEÑA ===== */
+        .verificador-container {
+            background: #141414;
+            border: 1px solid #2a4a5a;
+            border-radius: 24px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .verificador-container h3 {
+            color: #d6e8f5;
+            margin-bottom: 0.5rem;
+        }
+
+        .verificador-container input[type="text"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: #0a0a0a;
+            border: 1px solid #3a5a7a;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .verificador-container input[type="text"]:focus {
+            border-color: #4a9ac0;
+        }
+
+        .medidor {
+            margin-top: 0.8rem;
+            background: #2a3a4a;
+            border-radius: 40px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .medidor .barra {
+            height: 100%;
+            width: 0%;
+            border-radius: 40px;
+            transition: width 0.3s, background 0.3s;
+        }
+
+        .info-contraseña {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.4rem;
+            font-size: 0.9rem;
+            color: #9ab8d0;
+        }
+
+        .info-contraseña .nivel {
+            font-weight: 600;
+        }
+
+        .requisitos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+            margin-top: 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .requisitos span {
+            color: #7a9ab0;
+        }
+
+        .requisitos .cumple {
+            color: #6ac9a0;
+        }
+
+        .requisitos .no-cumple {
+            color: #e68080;
+        }
+
+        /* ===== BOTONES ===== */
+        .btn-primary {
+            background: #2a5a7a;
+            color: white;
+            border: none;
+            padding: 0.9rem 2.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            margin: 1rem 0 0.5rem 0;
+            border: 1px solid #4a8ab0;
+        }
+
+        .btn-primary:hover {
+            background: #3a7a9a;
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background: #2a2a2a;
+            color: #d0dce8;
+            border: 1px solid #4a5a6a;
+            padding: 0.6rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-left: 0.8rem;
+        }
+
+        .btn-secondary:hover {
+            background: #3a3a3a;
+        }
+
+        /* ===== RESULTADOS ===== */
+        #resultado {
+            background: #1a1a2a;
+            border-radius: 24px;
+            padding: 1.5rem 2rem;
+            margin-top: 1.8rem;
+            border: 1px solid #3a5a7a;
+            display: none;
+        }
+
+        #resultado.visible {
+            display: block;
+        }
+
+        #resultado h3 {
+            font-size: 1.5rem;
+            color: #d6e8f5;
+            margin-bottom: 0.2rem;
+        }
+
+        .puntuacion-badge {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        #mensajeFeedback {
+            color: #b0d0e0;
+        }
+
+        .barra-progreso {
+            background: #2a3a4a;
+            border-radius: 40px;
+            height: 10px;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .barra-progreso .relleno {
+            height: 100%;
+            width: 0%;
+            background: #4a9ac0;
+            border-radius: 40px;
+            transition: width 0.3s;
+        }
+
+        hr {
+            border: 1px dashed #2a4a5a;
+            margin: 2.5rem 0;
+        }
+
+        .flex-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: #000000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            .container {
+                background: #111111 !important;
+                border: 1px solid #2a2a2a !important;
+                box-shadow: none !important;
+            }
+            .btn-primary, .btn-secondary, .verificador-container input[type="text"] {
+                display: none !important;
+            }
+            .pregunta.correcta, .pregunta.incorrecta {
+                break-inside: avoid;
+            }
+            input[type="radio"] {
+                filter: invert(1) !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .verificador-container {
+                border: 1px solid #3a5a7a;
+                background: #1a1a1a !important;
+            }
+            .medidor .barra {
+                background: #4a9ac0 !important;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .container {
+                padding: 1.2rem 1rem;
+            }
+            h1 {
+                font-size: 1.6rem;
+                flex-wrap: wrap;
+            }
+            .parte-titulo {
+                font-size: 1.4rem;
+            }
+            .pregunta {
+                padding: 1rem;
+            }
+            .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>🔐 Evaluación · Seguridad digital</h1>
+        <div class="subtitulo">25 preguntas · Verificación de remitentes · Contraseñas robustas · Buenas prácticas en redes</div>
+    </header>
+
+    <!-- ===== VERIFICADOR DE CONTRASEÑA (interactivo) ===== -->
+    <section class="parte">
+        <div class="parte-titulo">
+            🔑 Verificador de contraseña segura
+            <small>prueba tu contraseña</small>
+        </div>
+        <div class="verificador-container">
+            <h3>Ingresa una contraseña para evaluar su robustez</h3>
+            <input type="text" id="passwordInput" placeholder="Escribe tu contraseña..." autocomplete="off">
+            <div class="medidor">
+                <div class="barra" id="barraMedidor"></div>
+            </div>
+            <div class="info-contraseña">
+                <span class="nivel" id="nivelTexto">Débil</span>
+                <span id="longitudTexto">0 caracteres</span>
+            </div>
+            <div class="requisitos" id="requisitosLista">
+                <span id="reqLongitud" class="no-cumple">❌ Al menos 8 caracteres</span>
+                <span id="reqMayus" class="no-cumple">❌ Mayúscula</span>
+                <span id="reqMinus" class="no-cumple">❌ Minúscula</span>
+                <span id="reqNum" class="no-cumple">❌ Número</span>
+                <span id="reqSimbolo" class="no-cumple">❌ Símbolo</span>
+                <span id="reqComun" class="no-cumple">❌ No es común</span>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <!-- ===== EVALUACIÓN DE 25 PREGUNTAS ===== -->
+    <section class="parte" id="evaluacion">
+        <div class="parte-titulo">
+            📝 Cuestionario · 25 preguntas
+            <small>selecciona la opción correcta</small>
+        </div>
+        <p style="color: #b0c8db; margin-bottom: 1.5rem;">
+            Responde todas las preguntas. Al finalizar, presiona <strong>“Verificar respuestas”</strong>.
+        </p>
+
+        <form id="quizForm">
+            <!-- ======== BLOQUE 1: Verificar remitentes y enlaces dudosos (8 preguntas) ======== -->
+            <div style="margin: 1.5rem 0 0.5rem 0; border-left: 4px solid #4a8ab0; padding-left: 1rem;">
+                <h3 style="color: #b0d0e0;">📧 Verificar remitentes y enlaces en correos</h3>
+            </div>
+
+            <!-- P1 -->
+            <div class="pregunta" id="p1">
+                <p>1. ¿Cuál es el primer paso al recibir un correo sospechoso de un banco?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q1" value="a" data-correct="false"> a) Hacer clic en el enlace para verificar la cuenta.</label>
+                    <label><input type="radio" name="q1" value="b" data-correct="true"> b) Revisar la dirección de correo del remitente y no hacer clic en enlaces.</label>
+                    <label><input type="radio" name="q1" value="c" data-correct="false"> c) Responder pidiendo más información.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P2 -->
+            <div class="pregunta" id="p2">
+                <p>2. Una señal de phishing en un correo es:</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q2" value="a" data-correct="false"> a) El uso de un saludo personalizado con tu nombre.</label>
+                    <label><input type="radio" name="q2" value="b" data-correct="true"> b) Un enlace que no coincide con el dominio oficial del remitente.</label>
+                    <label><input type="radio" name="q2" value="c" data-correct="false"> c) El correo tiene un asunto claro y conciso.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P3 -->
+            <div class="pregunta" id="p3">
+                <p>3. ¿Qué debes hacer si recibes un correo de un remitente desconocido con un archivo adjunto?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q3" value="a" data-correct="false"> a) Abrirlo para ver de qué se trata.</label>
+                    <label><input type="radio" name="q3" value="b" data-correct="true"> b) No abrirlo y eliminar el correo.</label>
+                    <label><input type="radio" name="q3" value="c" data-correct="false"> c) Reenviarlo a tus contactos para que lo analicen.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P4 -->
+            <div class="pregunta" id="p4">
+                <p>4. Para verificar la autenticidad de un correo, es recomendable:</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q4" value="a" data-correct="false"> a) Llamar al número que aparece en el correo.</label>
+                    <label><input type="radio" name="q4" value="b" data-correct="true"> b) Contactar a la entidad a través de sus canales oficiales (teléfono o web) y no usar los datos del correo.</label>
+                    <label><input type="radio" name="q4" value="c" data-correct="false"> c) Responder al correo pidiendo confirmación.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P5 -->
+            <div class="pregunta" id="p5">
+                <p>5. ¿Qué indica que un enlace es seguro?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q5" value="a" data-correct="false"> a) Que comienza con "http://"</label>
+                    <label><input type="radio" name="q5" value="b" data-correct="true"> b) Que comienza con "https://" y muestra un candado.</label>
+                    <label><input type="radio" name="q5" value="c" data-correct="false"> c) Que es corto y fácil de recordar.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P6 -->
+            <div class="pregunta" id="p6">
+                <p>6. ¿Qué hacer si accidentalmente hiciste clic en un enlace sospechoso?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q6" value="a" data-correct="false"> a) No hacer nada, probablemente no pasó nada.</label>
+                    <label><input type="radio" name="q6" value="b" data-correct="true"> b) Cambiar contraseñas, escanear el dispositivo con antivirus y monitorear cuentas.</label>
+                    <label><input type="radio" name="q6" value="c" data-correct="false"> c) Compartir el enlace en redes sociales para alertar.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P7 -->
+            <div class="pregunta" id="p7">
+                <p>7. Un correo falso de "soporte técnico" suele solicitar:</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q7" value="a" data-correct="false"> a) Que verifiques tu identidad con un código enviado a tu móvil.</label>
+                    <label><input type="radio" name="q7" value="b" data-correct="true"> b) Tus credenciales de acceso o información personal urgente.</label>
+                    <label><input type="radio" name="q7" value="c" data-correct="false"> c) Tu opinión sobre el servicio.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P8 -->
+            <div class="pregunta" id="p8">
+                <p>8. ¿Cuál de las siguientes es una práctica segura al recibir un correo inesperado?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q8" value="a" data-correct="false"> a) Reenviarlo a todos tus contactos para ver si es conocido.</label>
+                    <label><input type="radio" name="q8" value="b" data-correct="true"> b) Verificar la dirección del remitente y no proporcionar información sensible.</label>
+                    <label><input type="radio" name="q8" value="c" data-correct="false"> c) Abrir todos los enlaces para comprobar su contenido.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- ======== BLOQUE 2: Contraseñas robustas y MFA (8 preguntas) ======== -->
+            <div style="margin: 2rem 0 0.5rem 0; border-left: 4px solid #6ac9a0; padding-left: 1rem;">
+                <h3 style="color: #b0d0e0;">🔑 Contraseñas robustas y autenticación multifactor (MFA)</h3>
+            </div>
+
+            <!-- P9 -->
+            <div class="pregunta" id="p9">
+                <p>9. ¿Cuál es la característica principal de una contraseña robusta?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q9" value="a" data-correct="false"> a) Ser corta y fácil de recordar.</label>
+                    <label><input type="radio" name="q9" value="b" data-correct="true"> b) Tener al menos 12 caracteres con mayúsculas, minúsculas, números y símbolos.</label>
+                    <label><input type="radio" name="q9" value="c" data-correct="false"> c) Usar el nombre de tu mascota seguido de tu año de nacimiento.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P10 -->
+            <div class="pregunta" id="p10">
+                <p>10. ¿Qué es la autenticación multifactor (MFA)?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q10" value="a" data-correct="false"> a) Usar la misma contraseña en varios servicios.</label>
+                    <label><input type="radio" name="q10" value="b" data-correct="true"> b) Un método que requiere dos o más factores de verificación (algo que sabes, tienes o eres).</label>
+                    <label><input type="radio" name="q10" value="c" data-correct="false"> c) Un sistema que solo usa huella digital.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P11 -->
+            <div class="pregunta" id="p11">
+                <p>11. ¿Cuál de estos es un factor de autenticación basado en "algo que tienes"?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q11" value="a" data-correct="false"> a) Una contraseña.</label>
+                    <label><input type="radio" name="q11" value="b" data-correct="true"> b) Un código generado por una aplicación autenticadora en tu móvil.</label>
+                    <label><input type="radio" name="q11" value="c" data-correct="false"> c) Tu fecha de nacimiento.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P12 -->
+            <div class="pregunta" id="p12">
+                <p>12. ¿Por qué se recomienda no reutilizar contraseñas?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q12" value="a" data-correct="false"> a) Porque es más fácil de recordar.</label>
+                    <label><input type="radio" name="q12" value="b" data-correct="true"> b) Si una cuenta es comprometida, todas las que usen la misma contraseña están en riesgo.</label>
+                    <label><input type="radio" name="q12" value="c" data-correct="false"> c) No hay problema, es seguro.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P13 -->
+            <div class="pregunta" id="p13">
+                <p>13. ¿Qué longitud mínima se considera segura para una contraseña hoy en día?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q13" value="a" data-correct="false"> a) 6 caracteres.</label>
+                    <label><input type="radio" name="q13" value="b" data-correct="true"> b) 12 caracteres o más.</label>
+                    <label><input type="radio" name="q13" value="c" data-correct="false"> c) 8 caracteres exactos.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P14 -->
+            <div class="pregunta" id="p14">
+                <p>14. ¿Qué es un gestor de contraseñas?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q14" value="a" data-correct="false"> a) Un programa que roba contraseñas.</label>
+                    <label><input type="radio" name="q14" value="b" data-correct="true"> b) Una herramienta que almacena y genera contraseñas seguras de forma cifrada.</label>
+                    <label><input type="radio" name="q14" value="c" data-correct="false"> c) Un servicio que comparte tus contraseñas con otros.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P15 -->
+            <div class="pregunta" id="p15">
+                <p>15. ¿Cuál de las siguientes contraseñas es más robusta?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q15" value="a" data-correct="false"> a) 12345678</label>
+                    <label><input type="radio" name="q15" value="b" data-correct="false"> b) Password2024</label>
+                    <label><input type="radio" name="q15" value="c" data-correct="true"> c) 7#kL9$qR2!pX</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P16 -->
+            <div class="pregunta" id="p16">
+                <p>16. Si una plataforma ofrece MFA, ¿deberías activarla?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q16" value="a" data-correct="false"> a) No, es molesto.</label>
+                    <label><input type="radio" name="q16" value="b" data-correct="true"> b) Sí, siempre que sea posible, añade una capa extra de seguridad.</label>
+                    <label><input type="radio" name="q16" value="c" data-correct="false"> c) Solo si es por SMS.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- ======== BLOQUE 3: Buenas y malas prácticas en redes sociales (9 preguntas) ======== -->
+            <div style="margin: 2rem 0 0.5rem 0; border-left: 4px solid #e6b84a; padding-left: 1rem;">
+                <h3 style="color: #b0d0e0;">🌐 Buenas y malas prácticas en redes sociales</h3>
+            </div>
+
+            <!-- P17 -->
+            <div class="pregunta" id="p17">
+                <p>17. ¿Cuál es una buena práctica al publicar en redes sociales?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q17" value="a" data-correct="false"> a) Publicar tu ubicación en tiempo real.</label>
+                    <label><input type="radio" name="q17" value="b" data-correct="true"> b) Revisar la configuración de privacidad y limitar la audiencia de tus publicaciones.</label>
+                    <label><input type="radio" name="q17" value="c" data-correct="false"> c) Compartir tu número de teléfono en tu biografía.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P18 -->
+            <div class="pregunta" id="p18">
+                <p>18. ¿Qué debes evitar hacer en redes sociales?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q18" value="a" data-correct="false"> a) Interactuar con contenido de interés.</label>
+                    <label><input type="radio" name="q18" value="b" data-correct="true"> b) Publicar información personal sensible (dirección, DNI, etc.).</label>
+                    <label><input type="radio" name="q18" value="c" data-correct="false"> c) Seguir a cuentas oficiales de organismos.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P19 -->
+            <div class="pregunta" id="p19">
+                <p>19. ¿Cómo reaccionar ante un comentario ofensivo en una red social?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q19" value="a" data-correct="false"> a) Responder con insultos.</label>
+                    <label><input type="radio" name="q19" value="b" data-correct="true"> b) Reportar el comentario y bloquear al usuario.</label>
+                    <label><input type="radio" name="q19" value="c" data-correct="false"> c) Ignorarlo y no hacer nada.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P20 -->
+            <div class="pregunta" id="p20">
+                <p>20. ¿Qué es la "huella digital"?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q20" value="a" data-correct="false"> a) La imagen de perfil que usas.</label>
+                    <label><input type="radio" name="q20" value="b" data-correct="true"> b) El rastro de datos que dejas en internet a través de tus publicaciones, interacciones y actividades.</label>
+                    <label><input type="radio" name="q20" value="c" data-correct="false"> c) Un tipo de autenticación biométrica.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P21 -->
+            <div class="pregunta" id="p21">
+                <p>21. ¿Cuál es una práctica responsable al compartir contenido de terceros?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q21" value="a" data-correct="false"> a) Compartir sin verificar la fuente.</label>
+                    <label><input type="radio" name="q21" value="b" data-correct="true"> b) Verificar la autenticidad y, si es dudoso, no compartir.</label>
+                    <label><input type="radio" name="q21" value="c" data-correct="false"> c) Cambiar el título para hacerlo más llamativo.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P22 -->
+            <div class="pregunta" id="p22">
+                <p>22. ¿Con qué frecuencia deberías revisar la configuración de privacidad de tus redes sociales?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q22" value="a" data-correct="false"> a) Nunca, una vez configurada es suficiente.</label>
+                    <label><input type="radio" name="q22" value="b" data-correct="true"> b) Periódicamente, ya que las plataformas actualizan sus políticas.</label>
+                    <label><input type="radio" name="q22" value="c" data-correct="false"> c) Solo cuando te lo recuerde la plataforma.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P23 -->
+            <div class="pregunta" id="p23">
+                <p>23. ¿Cuál es una mala práctica en el uso de redes sociales?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q23" value="a" data-correct="false"> a) Usar nombres de usuario que no revelen tu identidad real.</label>
+                    <label><input type="radio" name="q23" value="b" data-correct="true"> b) Publicar fotos de tus documentos personales o tarjetas de crédito.</label>
+                    <label><input type="radio" name="q23" value="c" data-correct="false"> c) Denunciar contenido inapropiado.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P24 -->
+            <div class="pregunta" id="p24">
+                <p>24. ¿Qué hacer si detectas una cuenta falsa que suplanta a un conocido?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q24" value="a" data-correct="false"> a) No hacer nada, es problema de él/ella.</label>
+                    <label><input type="radio" name="q24" value="b" data-correct="true"> b) Reportar la cuenta a la plataforma y avisar a tu conocido por otro medio.</label>
+                    <label><input type="radio" name="q24" value="c" data-correct="false"> c) Seguir la cuenta para ver qué publica.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- P25 -->
+            <div class="pregunta" id="p25">
+                <p>25. ¿Cuál es el mejor consejo para mantener una buena salud digital en redes sociales?</p>
+                <div class="opciones">
+                    <label><input type="radio" name="q25" value="a" data-correct="false"> a) Estar conectado 24/7 para no perderte nada.</label>
+                    <label><input type="radio" name="q25" value="b" data-correct="true"> b) Establecer límites de tiempo, tomar descansos y priorizar relaciones presenciales.</label>
+                    <label><input type="radio" name="q25" value="c" data-correct="false"> c) Publicar todo lo que haces para mantener tu reputación.</label>
+                </div>
+                <div class="feedback-individual"></div>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex-row">
+                <button type="button" class="btn-primary" id="verificarBtn">✅ Verificar respuestas</button>
+                <button type="reset" class="btn-secondary" id="reiniciarBtn">⟲ Reiniciar</button>
+            </div>
+        </form>
+
+        <!-- Resultado -->
+        <div id="resultado">
+            <h3>📊 Resultado de la evaluación</h3>
+            <p style="font-size: 1.2rem;">
+                <span class="puntuacion-badge" id="puntuacionTexto">0</span> / 25 respuestas correctas
+            </p>
+            <div id="mensajeFeedback" style="font-weight: 500; margin-top: 0.3rem;"></div>
+            <div class="barra-progreso">
+                <div class="relleno" id="barraProgreso"></div>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.95rem; color: #9ab8d0;">
+                💡 Revisa las respuestas marcadas en <span style="color:#6ac9a0; font-weight:600;">verde</span> (correctas) y <span style="color:#e68080; font-weight:600;">rojo</span> (incorrectas).
+            </p>
+        </div>
+    </section>
+
+    <hr>
+
+    <!-- ===== FOOTER ===== -->
+    <div style="margin-top: 2.5rem; border-top: 2px solid #2a3a4a; padding-top: 1.2rem; text-align: center; color: #7a9ab0; font-size: 0.9rem;">
+        Evaluación de seguridad digital · 25 preguntas · Incluye verificador de contraseña.
+    </div>
+
+</div>
+
+<script>
+    (function() {
+        'use strict';
+
+        // ===== VERIFICADOR DE CONTRASEÑA =====
+        const passwordInput = document.getElementById('passwordInput');
+        const barraMedidor = document.getElementById('barraMedidor');
+        const nivelTexto = document.getElementById('nivelTexto');
+        const longitudTexto = document.getElementById('longitudTexto');
+
+        const reqLongitud = document.getElementById('reqLongitud');
+        const reqMayus = document.getElementById('reqMayus');
+        const reqMinus = document.getElementById('reqMinus');
+        const reqNum = document.getElementById('reqNum');
+        const reqSimbolo = document.getElementById('reqSimbolo');
+        const reqComun = document.getElementById('reqComun');
+
+        // Lista de contraseñas comunes (simplificada)
+        const commonPasswords = ['123456', 'password', '12345678', 'qwerty', 'abc123', 'password123', 'admin', 'letmein', 'welcome', 'monkey', 'dragon', 'master', 'sunshine', 'iloveyou', 'princess'];
+
+        function evaluarContraseña(contraseña) {
+            const length = contraseña.length;
+            const hasUpper = /[A-Z]/.test(contraseña);
+            const hasLower = /[a-z]/.test(contraseña);
+            const hasNumber = /\d/.test(contraseña);
+            const hasSymbol = /[^A-Za-z0-9]/.test(contraseña);
+            const isCommon = commonPasswords.includes(contraseña.toLowerCase());
+
+            // Actualizar requisitos
+            reqLongitud.className = length >= 8 ? 'cumple' : 'no-cumple';
+            reqLongitud.textContent = length >= 8 ? '✅ Al menos 8 caracteres' : '❌ Al menos 8 caracteres';
+
+            reqMayus.className = hasUpper ? 'cumple' : 'no-cumple';
+            reqMayus.textContent = hasUpper ? '✅ Mayúscula' : '❌ Mayúscula';
+
+            reqMinus.className = hasLower ? 'cumple' : 'no-cumple';
+            reqMinus.textContent = hasLower ? '✅ Minúscula' : '❌ Minúscula';
+
+            reqNum.className = hasNumber ? 'cumple' : 'no-cumple';
+            reqNum.textContent = hasNumber ? '✅ Número' : '❌ Número';
+
+            reqSimbolo.className = hasSymbol ? 'cumple' : 'no-cumple';
+            reqSimbolo.textContent = hasSymbol ? '✅ Símbolo' : '❌ Símbolo';
+
+            reqComun.className = !isCommon ? 'cumple' : 'no-cumple';
+            reqComun.textContent = !isCommon ? '✅ No es común' : '❌ Es una contraseña común';
+
+            // Calcular puntuación (0-5)
+            let score = 0;
+            if (length >= 8) score++;
+            if (hasUpper) score++;
+            if (hasLower) score++;
+            if (hasNumber) score++;
+            if (hasSymbol) score++;
+            if (!isCommon && length >= 12) score++; // extra por no común y larga
+
+            // Normalizar a 0-100%
+            let porcentaje = 0;
+            if (contraseña.length === 0) {
+                porcentaje = 0;
+            } else {
+                // Máximo 6 puntos (5 requisitos + extra)
+                const maxScore = 6;
+                porcentaje = Math.min(100, Math.round((score / maxScore) * 100));
+            }
+
+            barraMedidor.style.width = porcentaje + '%';
+            // Color según nivel
+            if (porcentaje < 30) {
+                barraMedidor.style.background = '#e68080';
+                nivelTexto.textContent = 'Débil';
+                nivelTexto.style.color = '#e68080';
+            } else if (porcentaje < 60) {
+                barraMedidor.style.background = '#e6b84a';
+                nivelTexto.textContent = 'Media';
+                nivelTexto.style.color = '#e6b84a';
+            } else if (porcentaje < 80) {
+                barraMedidor.style.background = '#6ac9a0';
+                nivelTexto.textContent = 'Fuerte';
+                nivelTexto.style.color = '#6ac9a0';
+            } else {
+                barraMedidor.style.background = '#4a9ac0';
+                nivelTexto.textContent = 'Muy fuerte';
+                nivelTexto.style.color = '#4a9ac0';
+            }
+
+            longitudTexto.textContent = contraseña.length + ' caracteres';
+        }
+
+        passwordInput.addEventListener('input', function() {
+            evaluarContraseña(this.value);
+        });
+
+        // Inicializar con valor vacío
+        evaluarContraseña('');
+
+        // ===== EVALUACIÓN DE 25 PREGUNTAS =====
+        const preguntas = document.querySelectorAll('.pregunta');
+        const verificarBtn = document.getElementById('verificarBtn');
+        const reiniciarBtn = document.getElementById('reiniciarBtn');
+        const resultadoDiv = document.getElementById('resultado');
+        const puntuacionTexto = document.getElementById('puntuacionTexto');
+        const mensajeFeedback = document.getElementById('mensajeFeedback');
+        const barraProgreso = document.getElementById('barraProgreso');
+
+        function verificarEvaluacion() {
+            let aciertos = 0;
+            let total = 0;
+            let todasRespondidas = true;
+
+            preguntas.forEach((pregunta) => {
+                const radios = pregunta.querySelectorAll('input[type="radio"]');
+                const selected = pregunta.querySelector('input[type="radio"]:checked');
+                const feedback = pregunta.querySelector('.feedback-individual');
+
+                pregunta.classList.remove('correcta', 'incorrecta');
+                feedback.textContent = '';
+                feedback.className = 'feedback-individual';
+
+                if (!selected) {
+                    todasRespondidas = false;
+                    feedback.textContent = '⚠️ No seleccionaste respuesta.';
+                    feedback.className = 'feedback-individual fail';
+                    return;
+                }
+
+                total++;
+                const isCorrect = selected.getAttribute('data-correct') === 'true';
+
+                if (isCorrect) {
+                    aciertos++;
+                    pregunta.classList.add('correcta');
+                    feedback.textContent = '✅ Correcto.';
+                    feedback.className = 'feedback-individual ok';
+                } else {
+                    pregunta.classList.add('incorrecta');
+                    const correcta = pregunta.querySelector('input[data-correct="true"]');
+                    const labelCorrecta = correcta ? correcta.closest('label')?.textContent.trim() : '';
+                    feedback.textContent = `❌ Incorrecto. La correcta era: ${labelCorrecta || 'Revisa la guía'}`;
+                    feedback.className = 'feedback-individual fail';
+                }
+            });
+
+            resultadoDiv.classList.add('visible');
+            puntuacionTexto.textContent = aciertos;
+            const porcentaje = total > 0 ? Math.round((aciertos / total) * 100) : 0;
+            barraProgreso.style.width = porcentaje + '%';
+
+            let mensaje = '';
+            if (porcentaje === 100) mensaje = '🌟 ¡Excelente! Demuestras un alto nivel de seguridad digital.';
+            else if (porcentaje >= 80) mensaje = '👏 Muy bien. Sigue reforzando tus conocimientos.';
+            else if (porcentaje >= 60) mensaje = '📖 Buen intento. Revisa los temas que fallaste.';
+            else mensaje = '🔁 Te recomendamos repasar la guía de seguridad digital.';
+            mensajeFeedback.textContent = mensaje;
+
+            if (!todasRespondidas) {
+                mensajeFeedback.textContent = '⚠️ Faltan preguntas por responder. Revisa las advertencias.';
+            }
+
+            resultadoDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function reiniciarEvaluacion() {
+            document.querySelectorAll('#quizForm input[type="radio"]').forEach(r => r.checked = false);
+            preguntas.forEach(p => {
+                p.classList.remove('correcta', 'incorrecta');
+                const fb = p.querySelector('.feedback-individual');
+                fb.textContent = '';
+                fb.className = 'feedback-individual';
+            });
+            resultadoDiv.classList.remove('visible');
+            barraProgreso.style.width = '0%';
+            puntuacionTexto.textContent = '0';
+            mensajeFeedback.textContent = '';
+            document.getElementById('evaluacion').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        verificarBtn.addEventListener('click', verificarEvaluacion);
+        reiniciarBtn.addEventListener('click', reiniciarEvaluacion);
+
+    })();
+</script>
+
+</body>
+</html>
